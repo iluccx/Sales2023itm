@@ -23,4 +23,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
+//aqui le pongo seguridad al sistema, puedo bloquear ips
+
 app.Run();

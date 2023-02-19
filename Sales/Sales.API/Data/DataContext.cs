@@ -5,7 +5,7 @@ namespace Sales.API.Data
 {
     public class DataContext : DbContext //Debo de heredar e instalar el entity framework. para conectarme a la db necesito constructor
     {
-        public DataContext(DbContextOptions<DataContext> options): base(options) //ctor
+        public DataContext(DbContextOptions<DataContext> options): base(options) //ctor constructor
         {
 
         }
