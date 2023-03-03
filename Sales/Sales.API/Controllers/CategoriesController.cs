@@ -6,40 +6,41 @@ using Sales.Shared.Entities;
 namespace Sales.API.Controllers
 {
     [ApiController]
-    [Route("/api/countries")]
-    public class CountriesController : ControllerBase
+    [Route("/api/categories")]
+    public class CategoriesController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public CountriesController(DataContext context) {
+        public CategoriesController(DataContext context)
+        {
             _context = context;
-        }    //recive la conexion a la base de datos impricita desde program.cs
+        } 
 
 
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            return Ok(await _context.Countries.ToListAsync());
+            return Ok(await _context.Categories.ToListAsync());
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAsync(int id)
         {
-            var country = await _context.Countries.SingleOrDefaultAsync(x=> x.Id==id);
-            if (country==null  )
+            var category = await _context.Categories.SingleOrDefaultAsync(x => x.Id == id);
+            if (category == null)
             {
                 return NotFound();
             }
-            return Ok(country); 
+            return Ok(category);
         }
 
         //Agregar registros
         [HttpPost]
-        public async Task<ActionResult> PostAsync(Country country)
+        public async Task<ActionResult> PostAsync(Category categories)
         {
             try
             {
-                _context.Countries.Add(country);
+                _context.Categories.Add(categories);
                 await _context.SaveChangesAsync();
                 return Ok();
             }
@@ -51,19 +52,19 @@ namespace Sales.API.Controllers
                 }
                 return BadRequest(dbUpdateException.Message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return BadRequest(ex.Message);  
+                return BadRequest(ex.Message);
             }
         }
 
         //Agregar registros
         [HttpPut]
-        public async Task<ActionResult> PutAsync(Country country)
+        public async Task<ActionResult> PutAsync(Category category)
         {
             try
             {
-                _context.Countries.Update(country);
+                _context.Categories.Update(category);
                 await _context.SaveChangesAsync();
                 return Ok();
             }
@@ -84,19 +85,17 @@ namespace Sales.API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var country = await _context.Countries.SingleOrDefaultAsync(x => x.Id == id);
-            if (country == null)
+            var category = await _context.Categories.SingleOrDefaultAsync(x => x.Id == id);
+            if (category == null)
             {
                 return NotFound();
             }
 
-            _context.Countries.Remove(country);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
 
             return NoContent();
 
         }
-
-
     }
 }
