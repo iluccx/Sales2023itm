@@ -5,7 +5,7 @@ namespace Sales.API.Data
 {
     public class DataContext : DbContext //Debo de heredar e instalar el entity framework. para conectarme a la db necesito constructor
     {
-        public DataContext(DbContextOptions<DataContext> options): base(options) //ctor
+        public DataContext(DbContextOptions<DataContext> options): base(options) //ctor constructor
         {
 
         }
@@ -13,6 +13,7 @@ namespace Sales.API.Data
         //para mapear mis tablas hay que crear una propiedad de tipo DbSet (Debo importar la clase)
 
         public DbSet<Country> Countries { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         //Para validar duplicados es creando un indice unico
 
@@ -20,6 +21,8 @@ namespace Sales.API.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Country>().HasIndex(x => x.Name).IsUnique(); //se usa expresion lambda
+            modelBuilder.Entity<Category>().HasIndex(x => x.Name).IsUnique(); //se usa expresion lambda
         }
+
     }
 }
