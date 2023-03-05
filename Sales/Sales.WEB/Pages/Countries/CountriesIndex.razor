@@ -13,6 +13,7 @@
             <thead>
                 <tr>
                     <th>País</th>
+                    <th>Estados / Departamentos</th>
                     <th>Acción</th>
                 </tr>
         </thead>
@@ -22,6 +23,9 @@
                    <tr>    
                             <td>
                                 @country.Name
+                            </td>
+                            <td>
+                                @country.StatesNumber
                             </td>
                             <td>
                             <a href="/countries/edit/@country.Id" class="btn btn-warning">

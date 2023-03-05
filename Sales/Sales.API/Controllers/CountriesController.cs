@@ -19,7 +19,18 @@ namespace Sales.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            return Ok(await _context.Countries.ToListAsync());
+            return Ok(await _context.Countries
+                .Include(x => x.States) //inerjoin para que me traiga los estados
+                .ToListAsync());
+        }
+
+        [HttpGet("full")]
+        public async Task<IActionResult> GetFullAsync()
+        {
+            return Ok(await _context.Countries
+                .Include(x => x.States!)
+                .ThenInclude(x => x.Cities)
+                .ToListAsync());
         }
 
         [HttpGet("{id:int}")]
@@ -94,9 +105,6 @@ namespace Sales.API.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-
         }
-
-
     }
 }
