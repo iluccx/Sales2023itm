@@ -6,54 +6,39 @@ using Sales.Shared.Entities;
 namespace Sales.API.Controllers
 {
     [ApiController]
-    [Route("/api/countries")]
-    public class CountriesController : ControllerBase
+    [Route("/api/cities")]
+    public class CitiesController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public CountriesController(DataContext context) {
+        public CitiesController(DataContext context)
+        {
             _context = context;
-        }    //recive la conexion a la base de datos impricita desde program.cs
-
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            return Ok(await _context.Countries
-                .Include(x => x.States) //inerjoin para que me traiga los estados
-                .ToListAsync());
-        }
-
-        [HttpGet("full")]
-        public async Task<IActionResult> GetFullAsync()
-        {
-            return Ok(await _context.Countries
-                .Include(x => x.States!)
-                .ThenInclude(x => x.Cities)
-                .ToListAsync());
+            return Ok(await _context.Cities.ToListAsync());
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAsync(int id)
         {
-            var country = await _context.Countries
-                .Include(x => x.States!)
-                .ThenInclude(x => x.Cities)
-                .SingleOrDefaultAsync(x=> x.Id==id);
-            if (country==null  )
+            var city = await _context.Cities.SingleOrDefaultAsync(x => x.Id == id);
+            if (city == null)
             {
                 return NotFound();
             }
-            return Ok(country); 
+            return Ok(city);
         }
 
-
         [HttpPost]
-        public async Task<ActionResult> PostAsync(Country country)
+        public async Task<ActionResult> PostAsync(City city)
         {
             try
             {
-                _context.Countries.Add(country);
+                _context.Cities.Add(city);
                 await _context.SaveChangesAsync();
                 return Ok();
             }
@@ -61,23 +46,22 @@ namespace Sales.API.Controllers
             {
                 if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
                 {
-                    return BadRequest("Ya existe un registro con el mismo nombre.");
+                    return BadRequest("Ya existe una Ciudad con el mismo nombre.");
                 }
                 return BadRequest(dbUpdateException.Message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return BadRequest(ex.Message);  
+                return BadRequest(ex.Message);
             }
         }
 
-
         [HttpPut]
-        public async Task<ActionResult> PutAsync(Country country)
+        public async Task<ActionResult> PutAsync(City city)
         {
             try
             {
-                _context.Countries.Update(country);
+                _context.Cities.Update(city);
                 await _context.SaveChangesAsync();
                 return Ok();
             }
@@ -85,7 +69,7 @@ namespace Sales.API.Controllers
             {
                 if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
                 {
-                    return BadRequest("Ya existe un registro con el mismo nombre.");
+                    return BadRequest("Ya existe una Ciudad con el mismo nombre.");
                 }
                 return BadRequest(dbUpdateException.Message);
             }
@@ -98,13 +82,13 @@ namespace Sales.API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var country = await _context.Countries.SingleOrDefaultAsync(x => x.Id == id);
-            if (country == null)
+            var city = await _context.Cities.SingleOrDefaultAsync(x => x.Id == id);
+            if (city == null)
             {
                 return NotFound();
             }
 
-            _context.Countries.Remove(country);
+            _context.Cities.Remove(city);
             await _context.SaveChangesAsync();
 
             return NoContent();

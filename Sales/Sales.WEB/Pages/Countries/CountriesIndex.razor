@@ -28,15 +28,9 @@
                                 @country.StatesNumber
                             </td>
                             <td>
-                            <a href="/countries/edit/@country.Id" class="btn btn-warning">
-                                  <span class="glyphicon glyphicon-pencil"></span> Editar 
-                                </a>
-
-                                <button class="btn btn-danger" @onclick=@(() => DeleteAsync(country.Id))>
-                                    <span class="glyphicon glyphicon-trash"></span> Borrar
-                                </button>
-
-
+                                <a href="/countries/details/@country.Id" class="btn btn-info">Detalles</a>
+                                <a href="/countries/edit/@country.Id" class="btn btn-warning">Editar</a>
+                                <button class="btn btn-danger" @onclick=@(() => DeleteAsync(country.Id))>Borrar</button>
                             </td>
                         </tr>   
                     }
