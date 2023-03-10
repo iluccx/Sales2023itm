@@ -10,5 +10,11 @@ namespace Sales.Shared.Entities  // las entidades las combierto en una base de d
         [MaxLength(100, ErrorMessage = "El campo {0} no puede tener más de {1}")] // el 1 se reemplaza por la cantidad de maxlengt
         [Display(Name = "País")]
         public string Name { get; set; } = null!;
+
+        //Marcando la relacion con State
+        public ICollection<State>? States { get; set; }
+
+        public int StatesNumber => States == null ? 0 : States.Count; //propiedades de lectura
     }
 }
+
