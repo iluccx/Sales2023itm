@@ -59,7 +59,7 @@
     public List<Country>? Countries { get; set; }
     public int currentPage = 1;
     public int totalPages = 10;
-    public int radio = 5;
+    public int radio = 9;
 
     [Parameter]
     [SupplyParameterFromQuery]
@@ -102,6 +102,15 @@
         Countries = responseHppt.Response!;
         totalPages = responseHppt2.Response!;
 
+                /*
+                if (totalPages>= 9)
+            {
+            radio = 9;
+            }
+                else
+                {
+                radio = totalPages;
+            }*/
     }
 
     private async Task SelectedPageAsync(int page)

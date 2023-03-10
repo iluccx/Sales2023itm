@@ -32,7 +32,9 @@
 
         for (int i = 1; i <= TotalPages; i++)
         {
-            if (i >= CurrentPage - Radio && i <= CurrentPage + Radio)
+            //(i >= CurrentPage - Radio && i <= CurrentPage + Radio)
+
+            if ((i >= CurrentPage - Radio && i <= CurrentPage + Radio))
             {
                 Links.Add(new PageModel
                     {
@@ -41,16 +43,44 @@
                         Text = $"{i}"
                     });
             }
+
+            /*if (CurrentPage> (Radio+1))
+            {
+                Links.Add(new PageModel
+                    {
+                        Page = i,
+                        Enable = CurrentPage == i,
+                        Text = $"{i}"
+                    });
+            }*/
         }
 
-        var linkNextEnable = CurrentPage != TotalPages;
+        /*if (CurrentPage > 10)
+        {
+            Links.RemoveRange(1, (CurrentPage - (Radio + 1)));
+        }*/
+
+
+        var linkNextEnable = CurrentPage < TotalPages;
         var linkNextPage = CurrentPage + 1;
-        Links.Add(new PageModel
-            {
-                Text = "Siguiente",
-                Page = linkNextPage,
-                Enable = linkNextEnable
-            });
+
+        if (linkNextEnable)
+        {
+            Links.Add(new PageModel
+                {
+                    Text = "Siguiente",
+                    Page = linkNextPage,
+                    Enable = linkNextEnable
+                });
+        }
+        else
+        {
+            Links.Add(new PageModel
+                {
+                    Text = "Siguiente",
+                    Enable = false
+                });
+        }
     }
 
     private async Task InternalSelectedPage(PageModel pageModel)
