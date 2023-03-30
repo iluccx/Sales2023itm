@@ -21,5 +21,7 @@ namespace Sales.Shared.Entities
 
         //1 estado pertenece a 1 pais. Automaticamente se relaciona
         public State? State { get; set; }
+
+        public ICollection<User>? Users { get; set; }
     }
 }

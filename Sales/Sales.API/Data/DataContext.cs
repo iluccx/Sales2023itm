@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Sales.Shared.Entities;
 
 namespace Sales.API.Data
 {
-    public class DataContext : DbContext //Debo de heredar e instalar el entity framework. para conectarme a la db necesito constructor
+    public class DataContext : IdentityDbContext<User> //Debo de heredar e instalar el entity framework. para conectarme a la db necesito constructor
     {
         public DataContext(DbContextOptions<DataContext> options): base(options) //ctor constructor
         {
