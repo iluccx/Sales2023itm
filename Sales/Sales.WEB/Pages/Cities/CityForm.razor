@@ -1,4 +1,5 @@
 ﻿@inject SweetAlertService sweetAlertService
+@attribute [Authorize(Roles = "Admin")]
 
 <NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
 
