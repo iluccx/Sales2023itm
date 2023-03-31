@@ -1,12 +1,11 @@
 ﻿@inject SweetAlertService sweetAlertService
-@attribute [Authorize(Roles = "Admin")]
 
 <NavigationLock OnBeforeInternalNavigation="OnBeforeInternalNavigation" />
 
 <EditForm EditContext="editContext" OnValidSubmit="OnValidSubmit">
     <DataAnnotationsValidator />
     <div class="mb-3">
-        <label>Categoria:</label>
+        <label>Categoría:</label>
         <div>
             <InputText class="form-control" @bind-Value="@Category.Name" />
             <ValidationMessage For="@(() => Category.Name)" />

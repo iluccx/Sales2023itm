@@ -1,14 +1,13 @@
-﻿@page "/categories/edit/{Id:int}"
+﻿@page "/categories/edit/{CategoryId:int}"
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
-@attribute [Authorize(Roles = "Admin")]
 
-<h3>Editar Categoria</h3>
+<h3>Editar categoría</h3>
 
 @if (category is null)
 {
-    <div class="spinner"/>
+    <div class="spinner" />
 }
 else
 {
@@ -19,12 +18,15 @@ else
     private Category? category;
     private CategoryForm? categoryForm;
 
+    [CascadingParameter]
+    BlazoredModalInstance BlazoredModal { get; set; } = default!;
+
     [Parameter]
-    public int Id { get; set; }
+    public int CategoryId { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var responseHttp = await repository.Get<Category>($"/api/categories/{Id}");
+        var responseHttp = await repository.Get<Category>($"/api/categories/{CategoryId}");
         if (responseHttp.Error)
         {
             if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -50,12 +52,14 @@ else
             await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
             return;
         }
+
+        await BlazoredModal.CloseAsync(ModalResult.Ok());
         Return();
     }
 
     private void Return()
     {
         categoryForm!.FormPostedSuccessfully = true;
-        navigationManager.NavigateTo("/categories");
+        navigationManager.NavigateTo($"/categories");
     }
 }
