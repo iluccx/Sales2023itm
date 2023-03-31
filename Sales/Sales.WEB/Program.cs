@@ -15,11 +15,9 @@ builder.Services.AddSingleton(sp => new HttpClient { BaseAddress = new Uri("http
 builder.Services.AddScoped<IRepository, Repository>(); //la inyecciones siempre hacerlas por la interfaz (inyeccion de repositorio)
 builder.Services.AddSweetAlert2();
 builder.Services.AddAuthorizationCore();
+
 builder.Services.AddScoped<AuthenticationProviderJWT>();
 builder.Services.AddScoped<AuthenticationStateProvider, AuthenticationProviderJWT>(x => x.GetRequiredService<AuthenticationProviderJWT>());
 builder.Services.AddScoped<ILoginService, AuthenticationProviderJWT>(x => x.GetRequiredService<AuthenticationProviderJWT>());
-
-
-
 
 await builder.Build().RunAsync();

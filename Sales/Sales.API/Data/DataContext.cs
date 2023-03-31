@@ -27,8 +27,8 @@ namespace Sales.API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Country>().HasIndex(x => x.Name).IsUnique(); //se usa expresion lambda
-            modelBuilder.Entity<Category>().HasIndex(x => x.Name).IsUnique(); //se usa expresion lambda
+            modelBuilder.Entity<Country>().HasIndex(x => x.Name).IsUnique();
+            modelBuilder.Entity<Category>().HasIndex(x => x.Name).IsUnique();
             modelBuilder.Entity<State>().HasIndex("CountryId","Name").IsUnique();
             modelBuilder.Entity<City>().HasIndex("StateId","Name").IsUnique();
         }

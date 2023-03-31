@@ -12,8 +12,8 @@ using Sales.API.Data;
 namespace Sales.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230330022209_AddUserTables")]
-    partial class AddUserTables
+    [Migration("20230331033613_todo")]
+    partial class todo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

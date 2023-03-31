@@ -22,6 +22,8 @@ builder.Services.AddTransient<SeedDb>();
 builder.Services.AddScoped<IApiService, ApiService>();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 
+
+
 builder.Services.AddIdentity<User, IdentityRole>(x =>
 {
     x.User.RequireUniqueEmail = true;
@@ -45,7 +47,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         ClockSkew = TimeSpan.Zero
     });
 
-
 var app = builder.Build();
 
 SeedData(app);
@@ -60,13 +61,8 @@ void SeedData(WebApplication app)
         service!.SeedAsync().Wait();
 
         SeedDb? serviceCategory = scope.ServiceProvider.GetService<SeedDb>();
-        serviceCategory!.SeedCategoryAsync().Wait();
+        serviceCategory!.SeedAsync().Wait();
     }
-}
-
-void SeedDb(WebApplication app)
-{
-    throw new NotImplementedException();
 }
 
 if (app.Environment.IsDevelopment())
