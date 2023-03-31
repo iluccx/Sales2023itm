@@ -1,4 +1,5 @@
 ﻿@page "/states/details/{StateId:int}"
+@using Sales.WEB.Pages.Cities;
 @inject IRepository repository
 @inject NavigationManager navigationManager
 @inject SweetAlertService sweetAlertService
@@ -13,7 +14,7 @@ else
     <h3>Detalles @state!.Name</h3>
     <div class="mb-2" style="display: flex; flex-wrap:wrap; align-items: center;">
         <div>
-            <a class="btn btn-primary" href="/cities/create/@StateId">Nueva Ciudad</a>
+            <a class="btn btn-primary" @onclick=@(() => ShowModal(@StateId))>Nueva Ciudad</a>
             <a class="btn btn-success" href="/countries/details/@state.CountryId">Regresar</a>
         </div>
         <div class="mx-2">
@@ -42,15 +43,15 @@ else
                     <tbody>
                     @foreach (var city in cities!)
                     {
-                                <tr>
-                                    <td>
+                        <tr>
+                            <td>
                                 @city.Name
-                                    </td>
-                                    <td>
-                                        <a href="/cities/edit/@city.Id" class="btn btn-warning">Editar</a>
-                                        <button class="btn btn-danger" @onclick=@(() => DeleteAsync(city.Id))>Borrar</button>
-                                    </td>
-                                </tr>
+                            </td>
+                            <td>
+                                <a @onclick=@(() => ShowModal(@city.Id, true)) class="btn btn-warning">Editar</a>
+                                <button class="btn btn-danger" @onclick=@(() => DeleteAsync(city.Id))>Borrar</button>
+                            </td>
+                        </tr>
                     }
                     </tbody>
                 </table>
@@ -64,6 +65,9 @@ else
     private List<City>? cities;
     private int currentPage = 1;
     private int totalPages;
+
+    [CascadingParameter]
+    IModalService Modal { get; set; } = default!;
 
     [Parameter]
     [SupplyParameterFromQuery]
@@ -86,6 +90,26 @@ else
     {
         currentPage = page;
         await LoadAsync(page);
+    }
+
+    private async Task ShowModal(int id = 0, bool isEdit = false)
+    {
+        IModalReference modalReference;
+
+        if (isEdit)
+        {
+            modalReference = Modal.Show<CityEdit>(string.Empty, new ModalParameters().Add("StateId", id));
+        }
+        else
+        {
+            modalReference = Modal.Show<CityCreate>(string.Empty, new ModalParameters().Add("StateId", id));
+        }
+
+        var result = await modalReference.Result;
+        if (result.Confirmed)
+        {
+            await LoadAsync();
+        }
     }
 
     private async Task LoadAsync(int page = 1)
