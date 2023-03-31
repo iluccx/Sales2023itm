@@ -1,11 +1,8 @@
 ﻿@page "/Register"
-
 @inject IRepository repository
 @inject SweetAlertService sweetAlertService
 @inject NavigationManager navigationManager
 @inject ILoginService loginService
-
-<h3>Registrar Nuevo Usuario</h3>
 
 <EditForm Model="userDTO" OnValidSubmit="CreteUserAsync">
     <DataAnnotationsValidator />
@@ -73,7 +70,7 @@
                                 {
                                     @foreach (var country in countries)
                                     {
-                                        <option value="@country.Id">@country.Name</option>
+                                                <option value="@country.Id">@country.Name</option>
                                     }
                                 }
                             </select>
@@ -88,7 +85,7 @@
                                 {
                                     @foreach (var state in states)
                                     {
-                                        <option value="@state.Id">@state.Name</option>
+                                                <option value="@state.Id">@state.Name</option>
                                     }
                                 }
                             </select>
@@ -103,18 +100,11 @@
                                 {
                                     @foreach (var city in cities)
                                     {
-                                        <option value="@city.Id">@city.Name</option>
+                                                <option value="@city.Id">@city.Name</option>
                                     }
                                 }
                             </select>
                             <ValidationMessage For="@(() => userDTO.CityId)" />
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label>Foto:</label>
-                        <div class="mb-3">
-                            <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
                         </div>
                     </div>
                     <div class="mb-3">
@@ -131,12 +121,13 @@
                             <ValidationMessage For="@(() => userDTO.PasswordConfirm)" />
                         </div>
                     </div>
+                    <div class="mb-3">
+                        <InputImg Label="Foto" ImageSelected="ImageSelected" ImageURL="@imageUrl" />
+                    </div>
                 </div>
             </div>
-            <button class="btn btn-primary" type="submit">Registrar</button>
         </div>
     </div>
-
 </EditForm>
 
 @code {
@@ -146,33 +137,15 @@
     private List<City>? cities;
     private string? imageUrl;
 
-    protected override async Task OnInitializedAsync()
+    protected async override Task OnInitializedAsync()
     {
         await LoadCountriesAsync();
-        if (!string.IsNullOrEmpty(userDTO.Photo))
-        {
-            imageUrl = userDTO.Photo;
-            userDTO.Photo = null;
-        }
     }
 
     private void ImageSelected(string imagenBase64)
     {
         userDTO.Photo = imagenBase64;
         imageUrl = null;
-    }
-
-
-    private async Task CountryChangedAsync(ChangeEventArgs e)
-    {
-        var selectedCountry = Convert.ToInt32(e.Value!);
-        await LoadStatesAsyn(selectedCountry);
-    }
-
-    private async Task StateChangedAsync(ChangeEventArgs e)
-    {
-        var selectedState = Convert.ToInt32(e.Value!);
-        await LoadCitiesAsyn(selectedState);
     }
 
     private async Task LoadCountriesAsync()
@@ -188,6 +161,12 @@
         countries = responseHttp.Response;
     }
 
+    private async Task CountryChangedAsync(ChangeEventArgs e)
+    {
+        var selectedCountry = Convert.ToInt32(e.Value!);
+        await LoadStatesAsyn(selectedCountry);
+    }
+
     private async Task LoadStatesAsyn(int countryId)
     {
         var responseHttp = await repository.Get<List<State>>($"/api/states/combo/{countryId}");
@@ -199,6 +178,12 @@
         }
 
         states = responseHttp.Response;
+    }
+
+    private async Task StateChangedAsync(ChangeEventArgs e)
+    {
+        var selectedState = Convert.ToInt32(e.Value!);
+        await LoadCitiesAsyn(selectedState);
     }
 
     private async Task LoadCitiesAsyn(int stateId)
@@ -214,12 +199,11 @@
         cities = responseHttp.Response;
     }
 
-
     private async Task CreteUserAsync()
     {
         userDTO.UserName = userDTO.Email;
         userDTO.UserType = UserType.User;
-        var responseHttp = await repository.Post<UserDTO, TokenDTO>("/api/accounts/CreateUser", userDTO);
+        var responseHttp = await repository.Post<UserDTO>("/api/accounts/CreateUser", userDTO);
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
@@ -227,9 +211,7 @@
             return;
         }
 
-        //loading = false;
         await sweetAlertService.FireAsync("Confirmación", "Su cuenta ha sido creada con éxito. Se te ha enviado un correo electrónico con las instrucciones para activar tu usuario.", SweetAlertIcon.Info);
         navigationManager.NavigateTo("/");
-
     }
 }
