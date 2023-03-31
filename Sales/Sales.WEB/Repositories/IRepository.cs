@@ -6,6 +6,8 @@ namespace Web.Repositories
     {
         Task<HttpResponseWrapper<T>> Get<T>(string url);
 
+        Task<HttpResponseWrapper<object>> Get(string url);
+
         Task<HttpResponseWrapper<object>> Post<T>(string url, T model); //post que no devuelva nada <object>
 
         Task<HttpResponseWrapper<TResponse>> Post<T, TResponse>(string url, T model); // caso contrario, devuelve el body
