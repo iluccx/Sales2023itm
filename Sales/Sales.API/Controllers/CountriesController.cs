@@ -10,6 +10,7 @@ using Sales.Shared.Entities;
 namespace Sales.API.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("/api/countries")]
     public class CountriesController : ControllerBase
     {
@@ -18,6 +19,13 @@ namespace Sales.API.Controllers
         public CountriesController(DataContext context) {
             _context = context;
         }    //recive la conexion a la base de datos impricita desde program.cs
+
+        [AllowAnonymous]
+        [HttpGet("combo")]
+        public async Task<ActionResult> GetCombo()
+        {
+            return Ok(await _context.Countries.ToListAsync());
+        }
 
 
         [HttpGet]

@@ -10,6 +10,7 @@ using Sales.Shared.Entities;
 namespace Sales.API.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("/api/states")]
     public class StatesController : ControllerBase
     {
@@ -19,6 +20,16 @@ namespace Sales.API.Controllers
         {
             _context = context;
         }
+
+        [AllowAnonymous]
+        [HttpGet("combo/{countryId:int}")]
+        public async Task<ActionResult> GetCombo(int countryId)
+        {
+            return Ok(await _context.States
+                .Where(x => x.CountryId == countryId)
+                .ToListAsync());
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
