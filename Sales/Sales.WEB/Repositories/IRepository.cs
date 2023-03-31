@@ -17,5 +17,6 @@ namespace Web.Repositories
         Task<HttpResponseWrapper<object>> Put<T>(string url, T model); // Put sin respuesta
 
         Task<HttpResponseWrapper<TResponse>> Put<T, TResponse>(string url, T model); // Put sobrecargado con respuesta
+
     }
 }
